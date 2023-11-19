@@ -1,0 +1,127 @@
+-------------------------------------------------------------------------------------------------------
+
+-------------------------------------- Usuario --------------------------------------------------------
+
+CREATE TABLE Usuario (
+    dni INT PRIMARY KEY,
+    contraseña VARCHAR(255),
+    nombre VARCHAR(100),
+    correo_electronico VARCHAR(255)
+);
+-------------------------------------------------------------------------------------------------------
+
+INSERT INTO Usuario (DNI, contraseña, nombre, correo_electronico)
+VALUES (123456789, 'mi_contraseña_segura', 'Juan Pérez', 'juan@example.com');
+INSERT INTO Usuario (DNI, contraseña, nombre, correo_electronico)
+VALUES (123456789, '123456789', 'Pepe', 'pepe@example.com');
+INSERT INTO Usuario (DNI, contraseña, nombre, correo_electronico)
+VALUES (12345, '12345', 'luis', 'luis@example.com');
+
+-------------------- super usuario ---------------------------------------------------
+
+INSERT INTO Usuario (DNI, contraseña, nombre, correo_electronico)
+VALUES (123, '123', '123', '123@example.com');
+
+-------------------------------------------------------------------------------------------------------
+CREATE TABLE fotos (
+  id_foto SERIAL PRIMARY KEY,
+  almacen_ubicacion TEXT NOT NULL,
+  nombre_imagen TEXT NOT NULL,
+  fecha_tomada TIMESTAMP DEFAULT current_timestamp
+);
+
+CREATE TABLE ubicacion_usuario (
+  id_ubicacion SERIAL PRIMARY KEY,
+  id_zona integer,
+  x NUMERIC,
+  y numeric,
+  FOREIGN KEY (id_zona) REFERENCES zona(id_zona)
+);
+
+CREATE TABLE evento (
+  id_evento SERIAL PRIMARY KEY,
+  id_foto integer,
+  id_ubicacion integer,
+  DNI integer,
+  descripcion TEXT NOT NULL,
+  FOREIGN KEY (id_foto) REFERENCES fotos(id_foto),
+  FOREIGN KEY (id_ubicacion) REFERENCES ubicacion_usuario(id_ubicacion),
+  FOREIGN KEY (DNI) REFERENCES Usuario(DNI)
+);
+
+
+-------------------------------------------------------------------------------------------------------
+
+-------------------------------------- Zona Ubicacion -------------------------------------------------
+
+CREATE TABLE zona (
+  id_zona SERIAL PRIMARY KEY,
+  id_parametro integer,
+  nombre_zona TEXT NOT NULL,
+  FOREIGN KEY (id_parametro) REFERENCES parametros(id_parametro)
+);
+
+CREATE TABLE parametros (
+  id_parametro SERIAL PRIMARY KEY,
+  x NUMERIC, -- o DOUBLE PRECISION, según tus preferencias
+  y NUMERIC -- o DOUBLE PRECISION
+);
+
+-------------------------------------------------------------------------------------------------------
+
+-------------------------------------- Valores En Duro -------------------------------------------------
+
+INSERT INTO parametros (x, y)
+VALUES (-16.424257124363834, -71.55665647716935);
+
+
+INSERT INTO zona (id_parametro, nombre_zona)
+VALUES (
+  (SELECT id_parametro FROM parametros WHERE x = -16.424257124363834 AND y = -71.55665647716935),
+  'Universidad La Salle'
+);
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+
+SELECT e.id_evento, u.dni, e.descripcion, f.fecha_tomada
+FROM evento e
+INNER JOIN Usuario u ON e.DNI = u.DNI
+INNER JOIN fotos f ON e.id_foto = f.id_foto
+INNER JOIN ubicacion_usuario uu ON uu.id_ubicacion = e.id_ubicacion
+WHERE u.dni = 12345678;
+
+
+
+--------------------------selecionar la fotos por su informacion---------------------------------------------------
+
+SELECT
+  id_foto,
+  almacen_ubicacion,
+  nombre_imagen,
+  EXTRACT(YEAR FROM fecha_tomada) AS ano,
+  EXTRACT(MONTH FROM fecha_tomada) AS mes,
+  EXTRACT(DAY FROM fecha_tomada) AS dia,
+  EXTRACT(HOUR FROM fecha_tomada) AS hora
+FROM fotos;
+
+
+-----------------------------------------------------------------------------
+select * from fotos f;
+select * from ubicacion_usuario ;
+select * from evento ;
+select * from zona ;
+
+select * from usuario u  ;
+
+
+DELETE FROM fotos;
+DELETE FROM ubicacion_usuario;
+DELETE FROM evento;
+
+
+
+
