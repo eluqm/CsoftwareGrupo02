@@ -40,7 +40,7 @@ const FiltroModal = ({ isVisible, onClose, onApplyFilter }) => {
           <TouchableOpacity
             style={styles.applyFilterButton}
             onPress={() => {
-              onApplyFilter(selectedDate);  // Pasar la fecha seleccionada
+              onApplyFilter(selectedDate);
               onClose();
             }}
           >

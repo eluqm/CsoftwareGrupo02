@@ -8,7 +8,8 @@ import axios from 'axios';
 import Login from './Login';
 import { EventEmitter } from 'events';
 import EditDescriptionModal from './EditDescriptionModal';
-import FiltroModal from './FiltroModal';
+//import FiltroModal from './FiltroModal';
+import FiltroModal from './ModalPicker';
 
 
 let loggedInUser = null;
@@ -204,32 +205,16 @@ export default function App() {
 
   const filterEvents = async (filteredDate) => {
     try {
-      const response = await axios.get(`http://192.168.1.105:4000/api/eventos`);
-      const eventos = response.data.eventos;
-  
-      // Filtrar eventos basados en la fecha
-      const eventosFiltrados = eventos.filter((evento) => {
-        const eventoDate = new Date(`${evento.ano}-${evento.mes}-${evento.dia}`);
-        const filtroDate = new Date(filteredDate);
-        console.log("papapa", eventoDate.toISOString().split('T')[0])
-        console.log("yyyyyyyyy", filtroDate.toISOString().split('T')[0])
-        return eventoDate.toISOString().split('T')[0] === filtroDate.toISOString().split('T')[0];
-      });
-  
-      // Imprimir eventos filtrados
-      console.log("Eventos filtrados:", eventosFiltrados);
-  
-      // Puedes hacer algo con los eventos filtrados, por ejemplo, mostrarlos en la interfaz de usuario.
+
+
+
+      console.log("Fecha filtrada GAAAAAAA:", filteredDate);
+
+
     } catch (error) {
       console.error('Error al obtener el evento:', error);
     }
-  
-    console.log("Esta vivo GAAAAA");
-    console.log("Gaaa", selectedReport);
-    console.log("Preciona el botón filtrar, muéstrame la fecha");
-    console.log("Fecha filtrada GAAAAAAA:", filteredDate);
   };
-  
 
 
 
@@ -727,12 +712,12 @@ export default function App() {
           isVisible={showFiltroModal}
           onClose={() => setShowFiltroModal(false)}
           onApplyFilter={(selectedDate) => {
-            filterEvents(selectedDate); // Llama a la función de filtrado con la fecha seleccionada
+            filterEvents(selectedDate);
             setShowFiltroModal(false);
           }}
         />
-
       )}
+
 
 
 

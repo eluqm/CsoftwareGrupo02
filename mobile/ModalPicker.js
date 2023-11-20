@@ -2,14 +2,27 @@ import React, { useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-const ModalPicker = ({ isVisible, onClose, onSelectMonthYear }) => {
+const ModalPicker = ({ isVisible, onClose, onSelectMonthYear, onApplyFilter }) => {
+
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
 
   const handleSelectMonthYear = () => {
     onSelectMonthYear({ month: selectedMonth, year: selectedYear });
     onClose();
   };
+
+  const handleApplyFilter = () => {
+    const selectedDate = {
+      day: selectedDay,
+      month: selectedMonth,
+      year: selectedYear,
+    };
+    onApplyFilter(selectedDate);
+    onClose();
+  };
+  
 
   return (
     <Modal
@@ -19,12 +32,27 @@ const ModalPicker = ({ isVisible, onClose, onSelectMonthYear }) => {
       onBackdropPress={onClose}
     >
       <View style={styles.eventModal}>
-        {/* Contenido del modal de eventos */}
-        <Text>Selecciona por mes o año</Text>
+        <Text>Seleciona El Dia - Mes - Año </Text>
+
+
+        <View style={styles.selectorContainer}>
+          <Text>Día:</Text>
+          <Picker
+            style={styles.picker}
+            selectedValue={selectedDay}
+            onValueChange={(itemValue) => setSelectedDay(itemValue)}
+          >
+            {[...Array(31).keys()].map((day) => (
+              <Picker.Item key={day.toString()} label={(day + 1).toString()} value={(day + 1).toString()} />
+            ))}
+          </Picker>
+        </View>
+
 
         <View style={styles.selectorContainer}>
           <Text>Mes:</Text>
           <Picker
+            style={styles.picker}
             selectedValue={selectedMonth}
             onValueChange={(itemValue) => setSelectedMonth(itemValue)}
           >
@@ -46,6 +74,7 @@ const ModalPicker = ({ isVisible, onClose, onSelectMonthYear }) => {
         <View style={styles.selectorContainer}>
           <Text>Año:</Text>
           <Picker
+            style={styles.picker}
             selectedValue={selectedYear}
             onValueChange={(itemValue) => setSelectedYear(itemValue)}
           >
@@ -57,8 +86,14 @@ const ModalPicker = ({ isVisible, onClose, onSelectMonthYear }) => {
           </Picker>
         </View>
 
-        <TouchableOpacity style={styles.filterButton} onPress={handleSelectMonthYear}>
-          <Text>Filtrar</Text>
+        <Text>Seleccionado: {selectedDay} {selectedMonth} {selectedYear}</Text>
+
+        <TouchableOpacity style={styles.applyFilterButton} onPress={handleApplyFilter}>
+          <Text style={styles.aplicarButtonText}>Aplicar Filtro</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <Text style={styles.closeButtonText}>Cerrar</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -69,16 +104,35 @@ const styles = StyleSheet.create({
   eventModal: {
     backgroundColor: "white",
     padding: 16,
+    margin: 40,
   },
   selectorContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
   },
-  filterButton: {
+  picker: {
+    flex: 1,
+  },
+  applyFilterButton: {
     backgroundColor: "#000",
     padding: 16,
     borderRadius: 4,
+    marginTop: 16,
+  },
+  aplicarButtonText: {
+    color: "white",
+    textAlign: "center",
+  },
+  closeButton: {
+    backgroundColor: "red",
+    padding: 16,
+    borderRadius: 4,
+    marginTop: 16,
+  },
+  closeButtonText: {
+    color: "white",
+    textAlign: "center",
   },
 });
 
