@@ -6,6 +6,7 @@ const ModalPicker = ({ isVisible, onClose, onSelectMonthYear, onApplyFilter }) =
 
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+
   const [selectedDay, setSelectedDay] = useState("");
 
   const handleSelectMonthYear = () => {

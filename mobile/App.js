@@ -65,6 +65,9 @@ export default function App() {
   const mapRef = useRef(null);
   const [markers, setMarkers] = useState([]);
 
+  const [eventosFiltrados, setEventosFiltrados] = useState([]);
+
+  const [filteredEvents, setFilteredEvents] = useState([]);
 
 
 
@@ -201,20 +204,55 @@ export default function App() {
 
 
 
+  const parseFecha = (fecha) => {
+    const meses = {
+      'Enero': 0,
+      'Febrero': 1,
+      'Marzo': 2,
+      'Abril': 3,
+      'Mayo': 4,
+      'Junio': 5,
+      'Julio': 6,
+      'Agosto': 7,
+      'Septiembre': 8,
+      'Octubre': 9,
+      'Noviembre': 10,
+      'Diciembre': 11,
+    };
+
+    const { day, month, year } = fecha;
+    const monthNumber = meses[month];
+
+    // Create the date in ISO format
+    const isoDate = new Date(`${year}-${monthNumber + 1}-${day}`);
+
+    return isoDate.toISOString();
+  };
+
+
+
   /// filtrado
 
   const filterEvents = async (filteredDate) => {
     try {
+      const response = await axios.get(`http://192.168.1.105:4000/api/eventos`);
+      const eventos = response.data.eventos;
+
+      const fecha = parseFecha(filteredDate);
+
+      const eventosFiltrados = eventos.filter((evento) => {
+        const eventoDate = new Date(`${evento.ano}-${evento.mes}-${evento.dia}`);
+        return eventoDate.toISOString().split('T')[0] === fecha.split('T')[0];
+      });
 
 
-
-      console.log("Fecha filtrada GAAAAAAA:", filteredDate);
-
-
+      console.log(eventosFiltrados)
+      setFilteredEvents(eventosFiltrados);
     } catch (error) {
       console.error('Error al obtener el evento:', error);
     }
   };
+
 
 
 
@@ -333,6 +371,20 @@ export default function App() {
     filterEvents();
   }, [selectedYear, selectedMonth]);
 
+/*
+  useEffect(() => {
+    if (filteredEvents.length > 0) {
+      mapRef.current.fitToCoordinates(
+        filteredEvents.map((evento) => ({
+          latitude: parseFloat(evento.x),
+          longitude: parseFloat(evento.y),
+        })),
+        { edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }, animated: true }
+      );
+    }
+  }, [filteredEvents]);
+  
+*/
 
   /* Reporte completo foto, descripcion, usuario*/
   const takePicture = async () => {
@@ -540,6 +592,8 @@ export default function App() {
 
 
             ))}
+
+
 
           {zonasConParametros.map((zona, index) => (
             zona && zona.latitude && zona.longitude ? (
