@@ -69,6 +69,10 @@ export default function App() {
 
   const [filteredEvents, setFilteredEvents] = useState([]);
 
+  const [filterActive, setFilterActive] = useState(false);
+
+
+
 
 
   useEffect(() => {
@@ -106,6 +110,7 @@ export default function App() {
           id_zona: location.id_zona,
           nombre_zona: location.nombre_zona,
         }));
+        console.log('Zonas Con Parametros:', zonas);
         setZonasConParametros(zonas);
       } else {
         console.error('Ubicación fija no encontrada');
@@ -264,12 +269,34 @@ export default function App() {
 
 
 
+  /*
+  
+    useEffect(() => {
+      if (filterActive) {
+        fetchZonasConParametros();
+      }
+    }, [filterActive, selectedYear, selectedMonth]);
+  
+  */
 
 
   useEffect(() => {
-    fetchZonasConParametros();
-  }, []);
+    if (filterActive) {
+      filterEvents();
+    }
+  }, [filterActive, selectedYear, selectedMonth]);
 
+  useEffect(() => {
+    if (zonasConParametros.length > 0) {
+      mapRef.current.fitToCoordinates(
+        zonasConParametros.map((zona) => ({
+          latitude: parseFloat(zona.latitude),
+          longitude: parseFloat(zona.longitude),
+        })),
+        { edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }, animated: true }
+      );
+    }
+  }, [zonasConParametros]);
 
 
 
@@ -367,11 +394,9 @@ export default function App() {
 
   /* Cuidado */
 
-  useEffect(() => {
-    filterEvents();
-  }, [selectedYear, selectedMonth]);
 
-/*
+
+
   useEffect(() => {
     if (filteredEvents.length > 0) {
       mapRef.current.fitToCoordinates(
@@ -383,8 +408,8 @@ export default function App() {
       );
     }
   }, [filteredEvents]);
-  
-*/
+
+
 
   /* Reporte completo foto, descripcion, usuario*/
   const takePicture = async () => {
@@ -548,7 +573,6 @@ export default function App() {
             longitudeDelta: 0.030,
           }}
         >
-
           {currentMarkerLocation && (
             <Marker
               coordinate={currentMarkerLocation}
@@ -564,45 +588,24 @@ export default function App() {
             />
           )}
 
-          {reportedZones
-
-            //.filter(zone => zone.userDNI === userDNI)
-            .map((zone, index) => (
-
-              zone && zone.latitude && zone.longitude ? (
-                <React.Fragment key={index}>
-                  <Marker
-                    coordinate={{ latitude: zone.latitude, longitude: zone.longitude }}
-                    pinColor="purple"
-                    title="Zona Reportada"
-                    onPress={() => handleMarkerPress(zone)}
-                  >
-                    <Callout>
-                      <Text>Zona Reportada</Text>
-                    </Callout>
-                  </Marker>
-                  <Circle
-                    center={{ latitude: zone.latitude, longitude: zone.longitude }}
-                    radius={100}
-                    fillColor="rgba(255, 0, 0, 0.2)"
-                    strokeColor="red"
-                  />
-                </React.Fragment>
-              ) : null
-
-
-            ))}
-
-
-
-          {zonasConParametros.map((zona, index) => (
-            zona && zona.latitude && zona.longitude ? (
+          {reportedZones.map((zone, index) => (
+            zone && zone.latitude && zone.longitude ? (
               <React.Fragment key={index}>
+                <Marker
+                  coordinate={{ latitude: zone.latitude, longitude: zone.longitude }}
+                  pinColor="purple"
+                  title="Zona Reportada"
+                  onPress={() => handleMarkerPress(zone)}
+                >
+                  <Callout>
+                    <Text>Zona Reportada</Text>
+                  </Callout>
+                </Marker>
                 <Circle
-                  center={{ latitude: zona.latitude, longitude: zona.longitude }}
+                  center={{ latitude: zone.latitude, longitude: zone.longitude }}
                   radius={100}
-                  fillColor="rgba(0, 0, 255, 0.5)"
-                  strokeColor="blue"
+                  fillColor="rgba(255, 0, 0, 0.2)"
+                  strokeColor="red"
                 />
               </React.Fragment>
             ) : null
@@ -612,8 +615,21 @@ export default function App() {
             <Circle center={currentMarkerLocation} radius={1000} />
           )}
 
-
+          {filteredEvents.map((evento, index) => (
+            <Marker
+              key={index}
+              coordinate={{ latitude: parseFloat(evento.x), longitude: parseFloat(evento.y) }}
+              pinColor="purple"
+              title="Evento Filtrado"
+              onPress={() => handleMarkerPress(evento)}
+            >
+              <Callout>
+                <Text>Evento Filtrado</Text>
+              </Callout>
+            </Marker>
+          ))}
         </MapView>
+
 
 
       ) : (
@@ -636,7 +652,13 @@ export default function App() {
 
       {isLoggedIn && (
         <View style={styles.filterButtonContainer}>
-          <TouchableOpacity style={styles.filterButton} onPress={() => setShowFiltroModal(true)}>
+          <TouchableOpacity
+            style={styles.filterButton}
+            onPress={() => {
+              setShowFiltroModal(true);
+              setFilterActive(false);// Desactiva el filtro al abrir el modal
+            }}
+          >
             <Text style={styles.filterButtonText}>Filtrar</Text>
           </TouchableOpacity>
         </View>
@@ -765,12 +787,20 @@ export default function App() {
         <FiltroModal
           isVisible={showFiltroModal}
           onClose={() => setShowFiltroModal(false)}
+          onSelectMonthYear={(selectedDate) => {
+            setSelectedFilterYear(selectedDate.year);
+            setSelectedFilterMonth(selectedDate.month);
+          }}
           onApplyFilter={(selectedDate) => {
             filterEvents(selectedDate);
             setShowFiltroModal(false);
           }}
+          setFilterActive={setFilterActive}  // Asegúrate de pasar setFilterActive aquí
         />
       )}
+
+
+
 
 
 
@@ -784,18 +814,7 @@ export default function App() {
   );
 }
 
-/*
 
-      <FiltroModal
-        isVisible={showFiltroModal}
-        onClose={() => setShowFiltroModal(false)}
-        onApplyFilter={() => {
-          filterEvents();
-          setShowFiltroModal(false);
-        }}
-      />
-
-*/
 
 /* estilos defindos  */
 const styles = StyleSheet.create({

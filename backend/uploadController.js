@@ -11,13 +11,13 @@ const upload = multer({ storage });
 
 // Inicializa Firebase (debes hacerlo antes de usarlo)
 const firebaseConfig = {
-  apiKey: "AIzaSyB-BAU_Nn5SFVMMUIj3VSutURf2mcbfWYY",
-  authDomain: "recolectorbasura-6ee29.firebaseapp.com",
-  projectId: "recolectorbasura-6ee29",
-  storageBucket: "recolectorbasura-6ee29.appspot.com",
-  messagingSenderId: "4075619738",
-  appId: "1:4075619738:web:792e83373a417392226623",
-  measurementId: "G-ZKS50XN6NC"
+  apiKey: "AIzaSyBIX2Q0mBLn78G9F9ozvQLvs6XTRQhNEkQ",
+  authDomain: "reportefotos-7f68e.firebaseapp.com",
+  projectId: "reportefotos-7f68e",
+  storageBucket: "reportefotos-7f68e.appspot.com",
+  messagingSenderId: "705487705435",
+  appId: "1:705487705435:web:9c3af19ec6de159d8ff67e",
+  measurementId: "G-ZXW2Z81V2M"
 };
 
 const app = initializeApp(firebaseConfig);

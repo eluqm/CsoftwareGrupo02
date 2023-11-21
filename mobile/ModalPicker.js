@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-const ModalPicker = ({ isVisible, onClose, onSelectMonthYear, onApplyFilter }) => {
+const ModalPicker = ({ isVisible, onClose, onSelectMonthYear, onApplyFilter, setFilterActive }) => {
 
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
@@ -20,6 +20,7 @@ const ModalPicker = ({ isVisible, onClose, onSelectMonthYear, onApplyFilter }) =
       month: selectedMonth,
       year: selectedYear,
     };
+    setFilterActive(true);
     onApplyFilter(selectedDate);
     onClose();
   };
