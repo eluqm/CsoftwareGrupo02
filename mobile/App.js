@@ -82,7 +82,7 @@ export default function App() {
   /* zona actual del usuario */
   const fetchFixedLocation = async () => {
     try {
-      const response = await axios.get('http://192.168.1.105:4000/api/fixed-location');
+      const response = await axios.get('http://192.168.148.234:4000/api/fixed-location');
       console.log('Response:', response.data);
       if (response.data.success) {
         const fixedLocations = response.data.fixedLocations.map(location => ({
@@ -102,7 +102,7 @@ export default function App() {
   /* traemos la zonas reportadas desde el backend y lo mostramos en el mapa */
   const fetchZonasConParametros = async () => {
     try {
-      const response = await axios.get('http://192.168.1.105:4000/api/zonas-con-parametros');
+      const response = await axios.get('http://192.168.148.234:4000/api/zonas-con-parametros');
       if (response.data.success) {
         const zonas = response.data.zonasConParametros.map(location => ({
           latitude: parseFloat(location.x),
@@ -124,7 +124,7 @@ export default function App() {
 
   const fetchImageURL = async (id_evento) => {
     try {
-      const response = await axios.get(`http://192.168.1.105:4000/api/imagen/${id_evento}`);
+      const response = await axios.get(`http://192.168.148.234:4000/api/imagen/${id_evento}`);
 
       console.log("Response Status:", response.status);
       console.log("Data:", response.data);
@@ -157,7 +157,7 @@ export default function App() {
       // Realiza la edición del reporte aquí (por ejemplo, usando axios o una función de API).
       // Actualiza la descripción en el servidor.
       try {
-        const response = await axios.put(`http://192.168.1.105:4000/api/edit-report/${selectedReport.id_evento}`, {
+        const response = await axios.put(`http://192.168.148.234:4000/api/edit-report/${selectedReport.id_evento}`, {
           description: newDescription,
         });
         if (response.data.success) {
@@ -191,7 +191,7 @@ export default function App() {
   const handleDeleteEvent = async () => {
     try {
       // Lógica para eliminar el evento
-      const response = await axios.delete(`http://192.168.1.105:4000/api/eliminar-evento/${selectedReport.id_evento}`);
+      const response = await axios.delete(`http://192.168.148.234:4000/api/eliminar-evento/${selectedReport.id_evento}`);
 
       if (response.data.success) {
         // Actualiza la interfaz de usuario o realiza otras acciones según sea necesario
@@ -240,7 +240,7 @@ export default function App() {
 
   const filterEvents = async (filteredDate) => {
     try {
-      const response = await axios.get(`http://192.168.1.105:4000/api/eventos`);
+      const response = await axios.get(`http://192.168.148.234:4000/api/eventos`);
       const eventos = response.data.eventos;
 
       const fecha = parseFecha(filteredDate);
@@ -456,7 +456,7 @@ export default function App() {
         }
 
         try {
-          const response = await axios.post('http://192.168.1.105:4000/api/upload', formData, {
+          const response = await axios.post('http://192.168.148.234:4000/api/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -495,7 +495,7 @@ export default function App() {
   const handleMarkerPress = async (zone) => {
     console.log("Ayudita", zone);
     try {
-      const response = await axios.get(`http://192.168.1.105:4000/api/eventos`);
+      const response = await axios.get(`http://192.168.148.234:4000/api/eventos`);
       console.log("Eventos:", response.data.eventos);
 
       // Recorre los eventos en la respuesta para comparar las coordenadas

@@ -89,3 +89,9 @@ npx expo start
 ## Entidad Relacion 
 
 ![Alt text](img/Entidad_Relacion.png)
+
+## Diseños de Caso de Prueba
+
+## Diseños de Caso de Prueba
+
+![Alt text](img/Reporte.png)
