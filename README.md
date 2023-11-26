@@ -92,6 +92,8 @@ npx expo start
 
 ## Diseños de Caso de Prueba
 
-## Diseños de Caso de Prueba
-
 ![Alt text](img/Reporte.png)
+
+## Ejecucion
+
+![Alt text](img/Ejecucion.png)
