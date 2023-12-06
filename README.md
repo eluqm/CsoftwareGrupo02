@@ -1,4 +1,4 @@
-# 
+
 
 ## Tabla de Contenidos:
 
@@ -8,7 +8,9 @@
 - [Tecnologías Usadas](#tecnologías-usadas)
 - [Instalación](#instalación)
 - [Requisitos y Especificación de Software](#requisitos-y-especificación-de-software)
-- [Interfaz del Proyecto](#interfaz-del-proyecto)
+- [Diagramas](#Diagramas)
+- [Mockups](#Mockups)
+
 
 ## Problemática:
 
@@ -19,7 +21,6 @@ Además, puede haber ocasiones en las que la recolección de basura por parte de
 
 ## Aplicaciones Similares:
 
-- 
 - Waze
 
 ## Propósito del Proyecto
@@ -73,27 +74,61 @@ npx expo start
 - RNF3: El sistema debe ser escalable para adaptarse a futuras expansiones y necesidades.
 - RNF4: El sistema debe ser compatible con diferentes dispositivos móviles y sistemas operativos.
 
+## Diagramas
 
-## Casos de Uso: Reporte de Basura
+### Casos de Uso: Reporte de Basura
 
 ![Alt text](img/imagen_2023-10-12_151935136.png)
 
-## Casos de Uso: Reporte de Basura
+### Casos de Uso: Reporte de Basura
 
 ![Alt text](img/imagen_2023-10-12_152019392.png)
 
-## Casos de Uso: Reporte de Basura
+### Casos de Uso: Reporte de Basura
 
 ![Alt text](img/imagen_2023-10-12_152245655.png)
 
-## Entidad Relacion 
+### Entidad Relacion 
 
 ![Alt text](img/Entidad_Relacion.png)
 
-## Diseños de Caso de Prueba
+### Diseños de Caso de Prueba
 
 ![Alt text](img/Reporte.png)
 
-## Ejecucion
+### Ejecucion de un Caso de Prueba
 
 ![Alt text](img/Ejecucion.png)
+
+## Mockups
+
+El proyecto propuesto busca tener una interfaz minimalista, con los mockups se busca diseñar la parte visual del proyecto. Los mockups que se muestra, da una guia de como se vera la interfaz.
+
+### Avance del Proyectos
+
+- Login Movil: EL usuario tendra que iniciar sesión para hacer uso de las funciones que ofrece.
+
+![loginWeb2](img/Mock/Group%201.png)
+
+- Interfaz de Inicio: Pantalla de inicio donde tenemos las opciones `Ubucacion Actual` y `Hacer Reporte`.
+![loginWeb2](img/Mock/Group%202.png)
+
+- Realizar Reporte: El usuario/admistrador podra realizar un reporte, el cual le pedira una `foto` y una `descripcion` para el reporte.
+
+![loginWeb2](img/Mock/Group%203.png)
+
+
+- Visualizar Zonas Reportadas: El usuario/admistrador va poder ver las zonas reportadas en el Mapa.
+
+![loginWeb2](img/Mock/Group%204.png)
+
+
+- Visualizar Informacion del Reporte:  El usuario/admistrador podran ver informacion de las Zona Reportada Señalada.
+
+![loginWeb2](img/Mock/Group%205.png)
+
+
+- Eliminar Reporte: El administrador sera el unico que podra eliminar el Reporte.
+
+![loginWeb2](img/Mock/Group%207.png)
+
